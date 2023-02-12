@@ -33,7 +33,6 @@ export function useBrowserDimensions(options = {}) {
 
   useEffect(() => {
     function updateDimensionsFromBrowser() {
-      // This variables return the dimensions
       const width = userWindow.innerWidth || userDocumentElement.clientWidth || userBodyElement.clientWidth || 0;
       const height = userWindow.innerHeight || userDocumentElement.clientHeight || userBodyElement.clientHeight || 0;
 
@@ -55,7 +54,7 @@ export function useBrowserDimensions(options = {}) {
       window.removeEventListener("resize", debouncedUpdateFromBrowser);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userDocumentElement, userBodyElement]);
+  }, []);
 
   return dimensions;
 }
