@@ -30,8 +30,8 @@ export function useScreenDimensions(options = {}) {
 
   useEffect(() => {
     function updateDimensionsFromScreen() {
-      const width = window.screen.availWidth || 0;
-      const height = window.screen.availHeight || 0;
+      const width = window.screen.availWidth || DEFAULT_SIZE.height;
+      const height = window.screen.availHeight || DEFAULT_SIZE.width;
 
       updateScreenDimensions({ width, height });
     }

@@ -33,8 +33,13 @@ export function useBrowserDimensions(options = {}) {
 
   useEffect(() => {
     function updateDimensionsFromBrowser() {
-      const width = userWindow.innerWidth || userDocumentElement.clientWidth || userBodyElement.clientWidth || 0;
-      const height = userWindow.innerHeight || userDocumentElement.clientHeight || userBodyElement.clientHeight || 0;
+      const width =
+        userWindow.innerWidth || userDocumentElement.clientWidth || userBodyElement.clientWidth || DEFAULT_SIZE.width;
+      const height =
+        userWindow.innerHeight ||
+        userDocumentElement.clientHeight ||
+        userBodyElement.clientHeight ||
+        DEFAULT_SIZE.height;
 
       updateBrowserDimensions({ width, height });
     }
