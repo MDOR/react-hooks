@@ -41,20 +41,21 @@ export function useBrowserDimensions(options = {}) {
 
     const debouncedUpdateFromBrowser = debounce(updateDimensionsFromBrowser, options.wait || DEFAULT_DEBOUNCE_TIME);
 
-    if (!userWindow) return dimensions;
-
-    document.addEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-    window.addEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-    window.addEventListener("resize", debouncedUpdateFromBrowser);
-    debouncedUpdateFromBrowser();
+    if (userWindow) {
+      document.addEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
+      window.addEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
+      window.addEventListener("resize", debouncedUpdateFromBrowser);
+      debouncedUpdateFromBrowser();
+    }
 
     return () => {
-      document.removeEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-      window.removeEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-      window.removeEventListener("resize", debouncedUpdateFromBrowser);
+      if (userWindow) {
+        document.removeEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
+        window.removeEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
+        window.removeEventListener("resize", debouncedUpdateFromBrowser);
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userDocumentElement, userBodyElement, userWindow, options.wait]);
 
   return dimensions;
 }

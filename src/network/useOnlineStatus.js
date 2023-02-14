@@ -23,17 +23,18 @@ export function useOnlineStatus(options = {}) {
       updateOnlineStatus(typeof navigator.onLine === "boolean" ? navigator.onLine : options.defaultStatus);
     }, options.wait || DEFAULT_DEBOUNCE_TIME);
 
-    if (!userWindow || !navigator) return onlineStatus;
-
-    window.addEventListener("online", debouncedGetOnlineStatus);
-    window.addEventListener("offline", debouncedGetOnlineStatus);
-    debouncedGetOnlineStatus();
-
+    if (!userWindow || !navigator) {
+      window.addEventListener("online", debouncedGetOnlineStatus);
+      window.addEventListener("offline", debouncedGetOnlineStatus);
+      debouncedGetOnlineStatus();
+    }
     return () => {
-      window.removeEventListener("online", debouncedGetOnlineStatus);
-      window.removeEventListener("offline", debouncedGetOnlineStatus);
+      if (!userWindow || !navigator) {
+        window.removeEventListener("online", debouncedGetOnlineStatus);
+        window.removeEventListener("offline", debouncedGetOnlineStatus);
+      }
     };
-  }, []);
+  }, [options.defaultStatus, options.wait, userWindow]);
 
   return onlineStatus;
 }

@@ -15,6 +15,8 @@
     "src/**/*"
   ],
   "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "cross-env  BABEL_ENV=es babel src --out-dir dist --ignore '**/*.{test|spec|unit}.js'",
     "prettier": "npx prettier --list-different --write \"./*.{js,jsx,ts,tsx,sass,scss,css,html,md}\" \"./**/*.{js,jsx,ts,tsx,sass,scss,css,html,md}\"",
     "format": "npx prettier --check \"./*.{js,jsx,ts,tsx,sass,scss,css,html,md}\" \"./**/*.{js,jsx,ts,tsx,sass,scss,css,html,md}\"",
     "lint": "eslint '**/*.{js,jsx,ts,tsx}' --fix --report-unused-disable-directives",
@@ -101,9 +103,7 @@
     "lint-staged": "^13.0.3",
     "np": "^7.6.2",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.7.1",
-    "rollup": "^2.79.0",
-    "rollup-plugin-uglify": "^6.0.4"
+    "prettier": "^2.7.1"
   },
   "dependencies": {
     "lodash": "^4.17.21",
