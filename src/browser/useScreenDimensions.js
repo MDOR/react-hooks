@@ -1,16 +1,19 @@
 import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 
-import { IS_BROWSER, DEFAULT_DEBOUNCE_TIME } from "../constants";
-
-const DEFAULT_SIZE = {
-  height: 0,
-  width: 0,
-};
+import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE, userScreen } from "../constants";
 
 /**
+ * @typedef {Object} screenDimensions
+ * @property {number} height
+ *  Screen height without interface elements
+ * @property {number} width
+ *  Screen width without interface elements
+ *
  * React hook intended to get the screen dimensions. (Includes the inner height/width, without interface elements like toolbars and scrollbars)
+ *
  * @category Browser
+ *
  * @param {Object} [options={}]        Configuration object intended to contain the default used by the hook.
  * @param {number} [options.height=0]
  * Default height value.
@@ -18,11 +21,9 @@ const DEFAULT_SIZE = {
  * Default width value.
  * @param {number} [options.wait=80]
  * The number of milliseconds to delay from the last event.
- * @returns {Function}                 Returns React hook that will return screen width and screen height
+ * @returns {screenDimensions}
  */
 export function useScreenDimensions(options = {}) {
-  const userScreen = IS_BROWSER && screen;
-
   const [dimensions, updateScreenDimensions] = useState({
     height: Number.isFinite(options.height) ? options.height : DEFAULT_SIZE.height,
     width: Number.isFinite(options.width) ? options.width : DEFAULT_SIZE.width,

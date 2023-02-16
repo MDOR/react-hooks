@@ -1,16 +1,19 @@
 import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 
-import { IS_BROWSER, DEFAULT_DEBOUNCE_TIME } from "../constants";
-
-const DEFAULT_SIZE = {
-  height: 0,
-  width: 0,
-};
+import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE, userWindow, userDocument } from "../constants";
 
 /**
+ * @typedef {Object} browserDimensions
+ * @property {number} height
+ *  Browser height without interface elements
+ * @property {number} width
+ *  Browser width without interface elements
+ *
  * React hook intended to get the browser dimensions. (Includes the inner height/width, without interface elements like toolbars and scrollbars)
+ *
  * @category Browser
+ *
  * @param {Object} [options={}]        Configuration object intended to contain the default used by the hook.
  * @param {number} [options.height=0]
  * Default height value.
@@ -18,11 +21,9 @@ const DEFAULT_SIZE = {
  * Default width value.
  * @param {number} [options.wait=80]
  * The number of milliseconds to delay from the last event.
- * @returns {Function}                 Returns React hook that will return browser width and browser height
+ * @returns {browserDimensions}
  */
 export function useBrowserDimensions(options = {}) {
-  const userWindow = IS_BROWSER && window;
-  const userDocument = IS_BROWSER && document;
   const userDocumentElement = userDocument && userDocument.documentElement;
   const userBodyElement = userDocument && userDocument.getElementsByTagName("body")[0];
 
