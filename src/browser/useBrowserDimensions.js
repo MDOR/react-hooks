@@ -61,7 +61,7 @@ export function useBrowserDimensions(options = {}) {
         window.removeEventListener("resize", debouncedUpdateFromBrowser);
       }
     };
-  }, [userDocumentElement, userBodyElement, userWindow, options.wait]);
+  }, [userDocumentElement, userBodyElement, options.wait]);
 
   return dimensions;
 }
