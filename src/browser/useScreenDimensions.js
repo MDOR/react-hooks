@@ -1,7 +1,7 @@
 import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 
-import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE, userScreen } from "../constants";
+import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE } from "../constants";
 
 /**
  * @typedef {Object} screenDimensions
@@ -49,7 +49,7 @@ export function useScreenDimensions(options = {}) {
         screen.removeEventListener("orientationchange", debouncedUpdateFromBrowser);
       }
     };
-  }, [userScreen, options.wait]);
+  }, [options.wait]);
 
   return dimensions;
 }
