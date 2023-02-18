@@ -25,8 +25,10 @@ import { DEFAULT_DEBOUNCE_TIME, userNavigatorConnection } from "../constants";
  */
 
 export function useNetworkConnectionType(options = {}) {
+  const support = userNavigatorConnection && !!userNavigatorConnection.effectiveType;
+
   const [networkConnectionType, updateNetworkConnectionType] = useState({
-    support: Boolean(userNavigatorConnection),
+    support,
     effectiveType: options.defaultEffectiveType,
   });
 
@@ -44,6 +46,7 @@ export function useNetworkConnectionType(options = {}) {
       userNavigatorConnection.addEventListener("change", debouncedGetNetworkConnectionType);
       debouncedGetNetworkConnectionType();
     }
+
     return () => {
       if (userNavigatorConnection)
         userNavigatorConnection.removeEventListener("change", debouncedGetNetworkConnectionType);

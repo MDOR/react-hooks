@@ -21,8 +21,8 @@ import { userNavigatorConnection } from "../constants";
  */
 
 export function useSaveData(options = {}) {
-  const supported = userNavigatorConnection && "saveData" in userNavigatorConnection;
-  const saveData = supported ? userNavigatorConnection.saveData : options.default || false;
+  const support = userNavigatorConnection && "saveData" in userNavigatorConnection;
+  const saveData = support ? userNavigatorConnection.saveData : options.default || false;
 
-  return { supported, saveData };
+  return { support, saveData };
 }

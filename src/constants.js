@@ -6,7 +6,8 @@ export const IS_PRODUCTION = process?.env?.NODE_ENV === "production";
 export const userWindow = IS_BROWSER && window;
 export const userDocument = IS_BROWSER && document;
 export const userScreen = IS_BROWSER && screen;
-export const userNavigatorConnection = IS_BROWSER && navigator && navigator.connection;
+export const userNavigator = IS_BROWSER && navigator;
+export const userNavigatorConnection = userNavigator && userNavigator.connection;
 
 export const DEFAULT_SIZE = {
   height: 0,

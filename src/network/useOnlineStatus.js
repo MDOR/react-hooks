@@ -1,9 +1,14 @@
 import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 
-import { DEFAULT_DEBOUNCE_TIME, userWindow } from "../constants";
+import { DEFAULT_DEBOUNCE_TIME, userNavigator } from "../constants";
 
 /**
+ * @typedef {Object} onLineStatus
+ * @property {boolean} support
+ *  Specify if the property is supported or not
+ * @property {boolean} onLine
+ *  Actual onLine status from the browser
  * React hook intended to get the online status, from the navigation object
  *
  * @category Network
@@ -13,24 +18,33 @@ import { DEFAULT_DEBOUNCE_TIME, userWindow } from "../constants";
  * @param    {boolean} [options.defaultStatus=true]
  * Default online status
  * @param    {number}  [options.wait=80]
- * The number of milliseconds to delay from the last event.*
- * @returns  {boolean}
+ * The number of milliseconds to delay from the last event.
+ * @returns  {onLineStatus}
  */
 export function useOnlineStatus(options = {}) {
-  const [onlineStatus, updateOnlineStatus] = useState(options.defaultStatus || true);
+  const support = userNavigator && typeof userNavigator.onLine !== "undefined";
+
+  const [onlineStatus, updateOnlineStatus] = useState({
+    support,
+    onLine: options.defaultStatus || true,
+  });
 
   useEffect(() => {
     const debouncedGetOnlineStatus = debounce(() => {
-      updateOnlineStatus(typeof navigator.onLine === "boolean" ? navigator.onLine : options.defaultStatus);
+      updateOnlineStatus(previousOnLineStatus => ({
+        ...previousOnLineStatus,
+        onLine: userNavigator.onLine,
+      }));
     }, options.wait || DEFAULT_DEBOUNCE_TIME);
 
-    if (!userWindow || !navigator) {
+    if (userNavigator) {
       window.addEventListener("online", debouncedGetOnlineStatus);
       window.addEventListener("offline", debouncedGetOnlineStatus);
       debouncedGetOnlineStatus();
     }
+
     return () => {
-      if (!userWindow || !navigator) {
+      if (userNavigator) {
         window.removeEventListener("online", debouncedGetOnlineStatus);
         window.removeEventListener("offline", debouncedGetOnlineStatus);
       }
