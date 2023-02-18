@@ -6,15 +6,16 @@ import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE } from "../constants";
 /**
  * @typedef {Object} screenDimensions
  * @property {number} height
- *  Screen height without interface elements
+ * Screen height without interface elements
  * @property {number} width
- *  Screen width without interface elements
+ * Screen width without interface elements
  *
  * React hook intended to get the screen dimensions. (Includes the inner height/width, without interface elements like toolbars and scrollbars)
  *
  * @category Browser
  *
- * @param {Object} [options={}]        Configuration object intended to contain the default used by the hook.
+ * @param {Object} [options={}]
+ * Configuration object intended to contain the default used by the hook.
  * @param {number} [options.height=0]
  * Default height value.
  * @param {number} [options.width=0]

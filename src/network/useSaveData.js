@@ -2,10 +2,10 @@ import { userNavigatorConnection } from "../constants";
 
 /**
  * @typedef {Object} saveDataConfiguration
- * @property {boolean} suppo`rt
- *   If this feature is supported by any browser
+ * @property {boolean} support
+ * If this feature is supported by any browser
  * @property {boolean} saveData
- *   Configuration of the saveData attribute*
+ * Configuration of the saveData attribute*
  *
  * React hook intended to get if the user has set reduced usage option.
  * This feature still as an experimental, for more information check:

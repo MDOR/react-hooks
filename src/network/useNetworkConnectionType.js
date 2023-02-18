@@ -6,9 +6,9 @@ import { DEFAULT_DEBOUNCE_TIME, userNavigatorConnection } from "../constants";
 /**
  * @typedef {Object} networkInformation
  * @property {boolean} support
- *   If the feature is supported or not
+ * If the feature is supported or not
  * @property {('slow-2g'|'2g'|'3g'|'4g'|null)} effectiveType
- *   If this feature is supported for the actual browser
+ * If this feature is supported for the actual browser
  *
  * React hook intended to get the network type, from the navigation object
  * * This feature still as an experimental, for more information check:
@@ -16,12 +16,12 @@ import { DEFAULT_DEBOUNCE_TIME, userNavigatorConnection } from "../constants";
  *
  * @category Network
  *
- * @param    {Object}  [options={}]
+ * @param   {Object}  [options={}]
  * Configuration object intended to contain the default used by the hook.
- * @param    {("slow-2g"|"2g"|"3g"|"4g"|undefined)} [options.defaultEffectiveType=null]
- * @param    {number}  [options.wait=80]
+ * @param   {("slow-2g"|"2g"|"3g"|"4g"|undefined)} [options.defaultEffectiveType=null]
+ * @param   {number}  [options.wait=80]
  * The number of milliseconds to delay from the last event.
- * @returns  {networkInformation}
+ * @returns {networkInformation}
  */
 
 export function useNetworkConnectionType(options = {}) {

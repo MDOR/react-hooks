@@ -16,14 +16,15 @@ import { DEFAULT_DEBOUNCE_TIME, userScreen } from "../constants";
  *
  * @category Browser
  *
- * @param {Object} [options={}]        Configuration object intended to contain the default used by the hook.
- * @param {string} [options.defaultOrientation=0]
+ * @param {Object} [options={}]
+ * Configuration object intended to contain the default used by the hook.
+ * @param {string} [options.defaultOrientation="portrait-primary"]
  * Default height value.
  * @param {number} [options.angle=0]
  * Default width value.
  * @param {number} [options.wait=80]
  * The number of milliseconds to delay from the last event.
- * @returns {screenOrientation}
+ * @return {screenOrientation}
  */
 
 export function useScreenOrientation(options = {}) {
