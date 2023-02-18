@@ -1,5 +1,6 @@
 // Browser
 export { useBrowserDimensions } from "./browser/useBrowserDimensions";
+export { useMediaQuery } from "./browser/useMediaQuery";
 export { useScreenDimensions } from "./browser/useScreenDimensions";
 export { useScreenOrientation } from "./browser/useScreenOrientation";
 
