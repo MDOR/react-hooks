@@ -6,9 +6,10 @@ import { DEFAULT_DEBOUNCE_TIME, userNavigator } from "../constants";
 /**
  * @typedef {Object} onLineStatus
  * @property {boolean} support
- *  Specify if the property is supported or not
+ * Specify if the property is supported or not
  * @property {boolean} onLine
- *  Actual onLine status from the browser
+ * Actual onLine status from the browser
+ *
  * React hook intended to get the online status, from the navigation object
  *
  * @category Network
