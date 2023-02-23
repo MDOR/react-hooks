@@ -4,8 +4,13 @@ const nodeVersionConfig = {
 module.exports = {
   root: true,
   parser: "@babel/eslint-parser",
-  plugins: ["import", "jest", "node", "regexp", "sonarjs", "unicorn", "unused-imports"],
-  extends: ["eslint:recommended", "plugin:security/recommended", "plugin:react-hooks/recommended"],
+  plugins: ["import", "jest", "node", "regexp", "sonarjs", "unicorn", "unused-imports", "jsdoc"],
+  extends: [
+    "eslint:recommended",
+    "plugin:security/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jsdoc/recommended",
+  ],
   settings: {
     node: {
       allowModules: [],
@@ -25,6 +30,8 @@ module.exports = {
   ignorePatterns: ["dist/**"],
   rules: {
     "prettier/prettier": "off",
+
+    "jsdoc/require-jsdoc": "off",
 
     "import/no-cycle": "warn",
     "import/no-unused-modules": "error",

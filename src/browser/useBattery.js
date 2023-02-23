@@ -2,35 +2,33 @@ import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 
 import { DEFAULT_DEBOUNCE_TIME, userNavigator } from "../constants";
-
-/**
- * @typedef {Object} battery
- * @property {boolean} support
- * If this feature is supported by any browser*
- * @property {boolean} charging
- * Reflect if the device is charging
- * @property {number} chargingTime
- * Time to charge device
- * @property {number} dischargingTime
- * Time to charge device
- * @property {number} level
- * Charging level
- *
- * React hook intended to get battery status
- * This feature still as an experimental, for more information check:
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API#browser_compatibility Compatibility table}
- *
- * @category Browser
- *
- * @param {Object} [options={}]
- * Hook configuration
- * @param {number} [options.wait=80]
- * The number of milliseconds to delay from the last event.
- * @returns {saveDataConfiguration}
- */
+import { attachEvents, detachEvents } from "../utils";
 
 const supportedBatteryEvents = ["levelchange", "chargingchange", "chargingtimechange", "dischargingtimechange"];
 
+/**
+ * @typedef {object} battery
+ * @property {boolean} support
+ * If this feature is supported by any browser.
+ * @property {boolean} charging
+ * Reflect if the device is charging.
+ * @property {number} chargingTime
+ * Time to charge device.
+ * @property {number} dischargingTime
+ * Time to charge device.
+ * @property {number} levelCharging
+ * Device charging level.
+ * @description
+ * React hook intended to get battery status.
+ * This feature still as an experimental, for more information check:
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API#browser_compatibility Compatibility table}
+ * @param {object} [options={}]
+ * React Hook configuration options.
+ * @param {number} [options.wait=80]
+ * The number of milliseconds to delay from the last event.
+ * @returns {battery}
+ * Battery object including: support, charging, chargingTime, dischargingTime and levelCharging.
+ */
 export function useBattery(options = {}) {
   // Support is limited by browser and constrained to the HTTPS context
   const support = userNavigator && typeof userNavigator.getBattery === "function";
@@ -58,7 +56,7 @@ export function useBattery(options = {}) {
 
   useEffect(() => {
     const debouncedGetBatteryStats = debounce(() => {
-      // The event won't get any Event Type, instead we shold rely in the battery instance.
+      // The event won't get any Event Type as parameter, instead we shold rely in the battery instance.
       const { level, charging, chargingTime, dischargingTime } = userBattery;
 
       updateBattery(previousBattery => ({
@@ -71,13 +69,13 @@ export function useBattery(options = {}) {
     }, options.wait || DEFAULT_DEBOUNCE_TIME);
 
     if (userBattery) {
-      for (const event of supportedBatteryEvents) userBattery.addEventListener(event, debouncedGetBatteryStats);
+      attachEvents(userBattery, supportedBatteryEvents, debouncedGetBatteryStats);
       debouncedGetBatteryStats();
     }
 
     return () => {
       if (userBattery) {
-        for (const event of supportedBatteryEvents) userBattery.removeEventListener(event, debouncedGetBatteryStats);
+        detachEvents(userBattery, supportedBatteryEvents, debouncedGetBatteryStats);
       }
     };
   }, [userBattery, options.wait]);

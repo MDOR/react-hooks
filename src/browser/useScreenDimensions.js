@@ -4,17 +4,14 @@ import { useState, useEffect } from "react";
 import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE } from "../constants";
 
 /**
- * @typedef {Object} screenDimensions
+ * @typedef {object} screenDimensions
  * @property {number} height
- * Screen height without interface elements
+ * Screen height without interface elements.
  * @property {number} width
- * Screen width without interface elements
- *
- * React hook intended to get the screen dimensions. (Includes the inner height/width, without interface elements like toolbars and scrollbars)
- *
- * @category Browser
- *
- * @param {Object} [options={}]
+ * Screen width without interface elements.
+ * @description
+ * React hook intended to get the screen dimensions. (Includes the inner height/width, without interface elements like toolbars and scrollbars).
+ * @param {object} [options={}]
  * Configuration object intended to contain the default used by the hook.
  * @param {number} [options.height=0]
  * Default height value.
@@ -23,6 +20,7 @@ import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE } from "../constants";
  * @param {number} [options.wait=80]
  * The number of milliseconds to delay from the last event.
  * @returns {screenDimensions}
+ * Screen's height and width.
  */
 export function useScreenDimensions(options = {}) {
   const [dimensions, updateScreenDimensions] = useState({

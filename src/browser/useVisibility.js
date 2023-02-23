@@ -4,23 +4,21 @@ import { useState, useEffect } from "react";
 import { DEFAULT_DEBOUNCE_TIME, userDocument } from "../constants";
 
 /**
- * @typedef {Object} visibilityStatus
+ * @typedef {object} visibilityStatus
  * @property {boolean} support
  * Specify if the property is supported or not
  * @property {boolean} visibility
  * Actual visibility status from the browser
- *
+ * @description
  * React hook intended to get browser's visibility status
- *
- * @category Browser
- *
- * @param    {Object}  [options={}]
+ * @param    {object}  [options={}]
  * Configuration object intended to contain the default used by the hook.
  * @param    {boolean} [options.defaultVisibility=true]
  * Default visibility status
  * @param    {number}  [options.wait=80]
  * The number of milliseconds to delay from the last event.
  * @returns  {visibilityStatus}
+ * Return visibility status, including: support, and visibility.
  */
 export function useVisibility(options = {}) {
   const [_, eventType] =

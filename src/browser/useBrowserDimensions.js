@@ -2,27 +2,27 @@ import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 
 import { DEFAULT_DEBOUNCE_TIME, DEFAULT_SIZE, userWindow, userDocument } from "../constants";
+import { attachEvents, detachEvents } from "../utils";
 
+const supportedDimensionEvents = ["DOMContentLoaded", "resize"];
 /**
- * @typedef {Object} browserDimensions
+ * @typedef {object} browserDimensions
  * @property {number} height
- * Browser height without interface elements
+ * Browser height without interface elements.
  * @property {number} width
- * Browser width without interface elements
- *
- * React hook intended to get the browser dimensions. (Includes the inner height/width, without interface elements like toolbars and scrollbars)
- *
- * @category Browser
- *
- * @param {Object} [options={}]
- * Configuration object intended to contain the default used by the hook.
+ * Browser width without interface elements.
+ * @description
+ * React hook intended to get the browser dimensions.
+ * It does not include interface elements like toolbars and scrollbars.
+ * @param {object} [options={}]
+ * React Hook configuration options.
  * @param {number} [options.height=0]
  * Default height value.
  * @param {number} [options.width=0]
  * Default width value.
  * @param {number} [options.wait=80]
  * The number of milliseconds to delay from the last event.
- * @returns {browserDimensions}
+ * @returns {browserDimensions} Browseer dimension's objects, inclyding height and width.
  */
 export function useBrowserDimensions(options = {}) {
   const userDocumentElement = userDocument && userDocument.documentElement;
@@ -34,7 +34,7 @@ export function useBrowserDimensions(options = {}) {
   });
 
   useEffect(() => {
-    function updateDimensionsFromBrowser() {
+    const debouncedUpdateFromBrowser = debounce(function updateDimensionsFromBrowser() {
       const width =
         userWindow.innerWidth || userDocumentElement.clientWidth || userBodyElement.clientWidth || DEFAULT_SIZE.width;
       const height =
@@ -44,22 +44,16 @@ export function useBrowserDimensions(options = {}) {
         DEFAULT_SIZE.height;
 
       updateBrowserDimensions({ width, height });
-    }
-
-    const debouncedUpdateFromBrowser = debounce(updateDimensionsFromBrowser, options.wait || DEFAULT_DEBOUNCE_TIME);
+    }, options.wait || DEFAULT_DEBOUNCE_TIME);
 
     if (userWindow) {
-      document.addEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-      window.addEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-      window.addEventListener("resize", debouncedUpdateFromBrowser);
+      attachEvents(userWindow, supportedDimensionEvents, debouncedUpdateFromBrowser);
       debouncedUpdateFromBrowser();
     }
 
     return () => {
       if (userWindow) {
-        document.removeEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-        window.removeEventListener("DOMContentLoaded", debouncedUpdateFromBrowser);
-        window.removeEventListener("resize", debouncedUpdateFromBrowser);
+        detachEvents(userWindow, supportedDimensionEvents, debouncedUpdateFromBrowser);
       }
     };
   }, [userDocumentElement, userBodyElement, options.wait]);

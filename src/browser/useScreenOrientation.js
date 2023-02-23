@@ -1,22 +1,22 @@
 import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 
-import { DEFAULT_DEBOUNCE_TIME, userScreen } from "../constants";
+import { DEFAULT_DEBOUNCE_TIME, userScreen, userWindow } from "../constants";
+import { attachEvents, detachEvents } from "../utils";
+
+const supportedOrientationEvents = ["orientationchange", "resize"];
 
 /**
- * @typedef {Object} screenOrientation
+ * @typedef {object} screenOrientation
  * @property {boolean} support
- *  Specify if the property is supported or not
+ *  Specify if the feature is supported or not.
  * @property {number} angle
- *  Screen angle
+ *  Screen angle.
  * @property {("portrait-primary"|"portrait-secondary"|"landscape-primary"|"landscape-secondary")} type
- *  Screen orientation type
+ *  Screen orientation type.
  *
  * React hook intended to get the browser orientation and angle.
- *
- * @category Browser
- *
- * @param {Object} [options={}]
+ * @param {object} [options={}]
  * Configuration object intended to contain the default used by the hook.
  * @param {string} [options.defaultOrientation="portrait-primary"]
  * Default height value.
@@ -24,9 +24,9 @@ import { DEFAULT_DEBOUNCE_TIME, userScreen } from "../constants";
  * Default width value.
  * @param {number} [options.wait=80]
  * The number of milliseconds to delay from the last event.
- * @return {screenOrientation}
+ * @returns {screenOrientation}
+ * Return screenOrientation object including: support, angle and orientation.
  */
-
 export function useScreenOrientation(options = {}) {
   const support =
     userScreen && Boolean(userScreen.orientation || userScreen.mozOrientation || userScreen.msOrientation);
@@ -38,6 +38,9 @@ export function useScreenOrientation(options = {}) {
   });
 
   useEffect(() => {
+    /**
+     *
+     */
     function updateOrientationFromBrowser() {
       const { angle, type } = userScreen.orientation || userScreen.mozOrientation || userScreen.msOrientation;
 
@@ -53,15 +56,13 @@ export function useScreenOrientation(options = {}) {
     );
 
     if (support) {
-      window.addEventListener("orientationchange", debouncedUpdateOrientationFromBrowser);
-      window.addEventListener("resize", debouncedUpdateOrientationFromBrowser);
+      attachEvents(userWindow, supportedOrientationEvents, debouncedUpdateOrientationFromBrowser);
       debouncedUpdateOrientationFromBrowser();
     }
 
     return () => {
       if (support) {
-        window.removeEventListener("orientationchange", debouncedUpdateOrientationFromBrowser);
-        window.removeEventListener("resize", debouncedUpdateOrientationFromBrowser);
+        detachEvents(userWindow, supportedOrientationEvents, debouncedUpdateOrientationFromBrowser);
       }
     };
   }, [support, options.wait]);
